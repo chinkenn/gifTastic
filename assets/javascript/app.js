@@ -1,7 +1,10 @@
+// initial variable for buttons
 var topics = ["lebron james", "james harden", "steph curry", "kevin durant", "kyrie irving", "klay thompson", "chris paul",
 "anthony davis", "john wall", "draymond green", "giannis antetokounmpo", "damian lillard", "kobe bryant", "michael jordan",
 "magic johnson", "julius erving"];
+// default 10 gifs
 var result = 10;
+// putting buttons for players on the browser
 function renderButtons() {
     $("#button-view").empty();
     for (i = 0; i < topics.length; i++) {
@@ -13,6 +16,7 @@ function renderButtons() {
     }
 }
 renderButtons();
+// function for adding a player button
 $("#add-player").click(function(event) {
     event.preventDefault();
     var newPlayer = $("#player-input").val().trim();
@@ -20,6 +24,7 @@ $("#add-player").click(function(event) {
     renderButtons();
     $("#player-input").val("");
 })
+// function to add additional gifs on top of the default 10 gifs
 $("#addGif").click(function() {
     event.preventDefault();
     var additionalGifs = parseInt($("#addGif-input").val().trim());
@@ -30,6 +35,7 @@ $("#addGif").click(function() {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
+        // for loop to only get new gifs and not original results
         for (k = result; k < result + additionalGifs; k++) {
             var a = $("<div>")
             a.addClass("float-left gifClass card");
@@ -47,7 +53,6 @@ $("#addGif").click(function() {
             rating.text("Rating: " + response.data[k].rating);
             rating.css({"width": response.data[k].images.fixed_height.width});
             cardBody.append(rating);
-            //downloadButton.css({"width": response.data[j].images.fixed_height.width});
             var download = $("<a>");
             download.attr("href", response.data[k].images.fixed_height.url);
             download.attr("download", true);
@@ -61,6 +66,7 @@ $("#addGif").click(function() {
     })
     $("#addGif-input").val("");
 })
+// function for loading gifs after clicking on a player's name
 $("#button-view").on("click", ".button", function() {
     $("#gif").empty();
     var player = $(this).attr("data-player");
@@ -98,10 +104,12 @@ $("#button-view").on("click", ".button", function() {
         }
     })
 })
+// function to play/stop gif
 var running = false;
 $("#gif").on("click", ".picture", function() {
     var motionGif = $(this).attr("src");
     if (running === false) {
+        // Did this before having the class example. The links have similar paths so I'm using the replace function
         $(this).attr("src", motionGif.replace("_s.gif",".gif"));
         running = true;
     }
